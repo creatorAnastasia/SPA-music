@@ -1,6 +1,7 @@
-
-import styled, {keyframes} from "styled-components";
-
+import React, { useState } from 'react';
+import Buttons from './components/common/Buttons';
+import ButtonBlick from './components/common/ButtonBlick';
+import styled from "styled-components";
 
 const AppWrapper = styled.div`
 display: flex;
@@ -45,82 +46,39 @@ letter-spacing: 1px;
 `
 
 
-const blick = keyframes`
-from {
-  transform: translateX(-4em) skewX(-45deg);
-};
-to {
-  transform: translateX(10em) skewX(-45deg);
-}`;
-const ButtonS = styled.button`
-  position: relative;
-  display: inline-block;
-  text-decoration: none;
-background: rgb(203,96,179); /* Old browsers */
-background: -moz-linear-gradient(top,  rgba(203,96,179,1) 0%, rgba(63,149,255,1) 100%); /* FF3.6-15 */
-background: -webkit-linear-gradient(top,  rgba(203,96,179,1) 0%,rgba(63,149,255,1) 100%); /* Chrome10-25,Safari5.1-6 */
-background: linear-gradient(to bottom,  rgba(203,96,179,1) 0%,rgba(63,149,255,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cb60b3', endColorstr='#3f95ff',GradientType=0 ); /* IE6-9 */
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 5px;
-//чтобы ничего не выходило за пределы блока/
- overflow: hidden; 
-  
-  &:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    //ширина блика
-    width: 2em;
-    height: 100%;
-    background-color: rgba(255,255,255, 0.6);
-    transform: translateX(6em) skewX(-45deg);
-  }
-  &:hover {
-    cursor:pointer;
-    &:before {
-      animation: ${blick} 0.5s  ;
-     }
-  }
-` 
+const ButtonClear = styled(ButtonBlick)`
+/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#aa0330+0,8f0222+34,6b0025+100 */
+background: rgb(170,3,48); /* Old browsers */
+background: -moz-linear-gradient(top,  rgba(170,3,48,1) 0%, rgba(143,2,34,1) 34%, rgba(107,0,37,1) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top,  rgba(170,3,48,1) 0%,rgba(143,2,34,1) 34%,rgba(107,0,37,1) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom,  rgba(170,3,48,1) 0%,rgba(143,2,34,1) 34%,rgba(107,0,37,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#aa0330', endColorstr='#6b0025',GradientType=0 ); /* IE6-9 */
+`
 
 
-
-const Grid = styled.div`
-display: grid;
-grid-template-rows: 1fr 1fr 1fr 1fr;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-gap: 1em;
-`;
+ 
 
 function App({className}) {
+  const [result, setResult] = useState('')
+  const removeResult = () => setResult('')
+  const countResult = () => {
+    try {
+      setResult(eval(result))
+    } catch {
+      setResult('NaN')
+    }
+  }
+  const addSymbol = (sym) =>{
+    setResult(result + sym)
+  }
   return (
     <AppWrapper className={className}>
       <Container>
         <Result>
-        <ButtonS onClick={() => console.log("C")}>C</ButtonS>
-          <Number>0</Number>
+        <ButtonClear  onClick={() => removeResult()}>C</ButtonClear>
+          <Number>{result}</Number>
           </Result>
-          <Grid>
-        <ButtonS onClick={() => console.log("7")}>7</ButtonS>
-        <ButtonS onClick={() => console.log("8")}>8</ButtonS>
-        <ButtonS onClick={() => console.log("9")}>9</ButtonS>
-        <ButtonS onClick={() => console.log("+")}>+</ButtonS>
-        <ButtonS onClick={() => console.log("4")}>4</ButtonS>
-        <ButtonS onClick={() => console.log("5")}>5</ButtonS>
-        <ButtonS onClick={() => console.log("6")}>6</ButtonS>
-        <ButtonS onClick={() => console.log("-")}>-</ButtonS>
-        <ButtonS onClick={() => console.log("1")}>1</ButtonS>
-        <ButtonS onClick={() => console.log("2")}>2</ButtonS>
-        <ButtonS onClick={() => console.log("3")}>3</ButtonS>
-        <ButtonS onClick={() => console.log("÷")}>÷</ButtonS>
-        <ButtonS onClick={() => console.log("0")}>0</ButtonS>
-        <ButtonS onClick={() => console.log(".")}>.</ButtonS>
-        <ButtonS onClick={() => console.log("=")}>=</ButtonS>
-        <ButtonS onClick={() => console.log("x")}>x</ButtonS>
-          </Grid>
+          <Buttons addSymbol={addSymbol} countResult={countResult}/>
         </Container>
     </AppWrapper>
   );
